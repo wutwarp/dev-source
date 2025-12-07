@@ -3,121 +3,101 @@
 import { useState, useEffect } from 'react';
 
 const ImageSlider = () => {
-  // แก้ไข array รูปภาพของคุณที่นี่
   const images = [
-    { id: 1, src: "https://www.source-th.com/wp-content/uploads/2025/02/slide5.jpg", alt: "Image 1" },
-    { id: 2, src: "https://www.source-th.com/wp-content/uploads/2024/03/ROOM-PHOTO-min.jpg", alt: "Image 2" },
-    { id: 3, src: "https://www.source-th.com/wp-content/uploads/2025/02/slide4.jpg", alt: "Image 3" },
-    { id: 4, src: "https://source-th.com/wp-content/uploads/2024/09/PURO-Lax.jpg", alt: "Image 4" },
-    //{ id: 5, src: "https://www.source-th.com/wp-content/uploads/2025/02/slide5.jpg", alt: "Image 5" },
-    //{ id: 6, src: "https://www.source-th.com/wp-content/uploads/2025/02/slide5.jpg", alt: "Image 6" },
+    { id: 1, src: "https://www.source-th.com/wp-content/uploads/2025/02/slide5.jpg", alt: "Modern Sofa" },
+    { id: 2, src: "https://www.source-th.com/wp-content/uploads/2024/03/ROOM-PHOTO-min.jpg", alt: "Living Room" },
+    { id: 3, src: "https://www.source-th.com/wp-content/uploads/2025/02/slide4.jpg", alt: "Dining Set" },
+    { id: 4, src: "https://source-th.com/wp-content/uploads/2024/09/PURO-Lax.jpg", alt: "Interior Design" },
   ];
 
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  const handleNext = () => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
-  };
-
-  const handlePrev = () => {
-    setCurrentIndex((prevIndex) => (prevIndex - 1 + images.length) % images.length);
-  };
-
-  // Auto-slide functionality (optional)
+  // Auto-slide
   useEffect(() => {
-    const slideInterval = setInterval(handleNext, 5000); // Change slide every 5 seconds
+    const slideInterval = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % images.length);
+    }, 5000);
     return () => clearInterval(slideInterval);
   }, []);
 
+  const handleNext = () => {
+    setCurrentIndex((prev) => (prev + 1) % images.length);
+  };
+
+  const handlePrev = () => {
+    setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
+  };
+
   return (
-    <div className="relative w-full overflow-hidden">
-      {/* Image Container */}
-       <div
-        className="flex transition-transform duration-700 ease-in-out"
-        style={{
-          transform: `translateX(-${currentIndex * 100}%)`,
-        }}
-      >
-        {images.map((image) => (
-          // เพิ่ม bg-gray-100 หรือสีที่ชอบ เพื่อรองรับกรณีรูปไม่เต็มจอ
-          <div key={image.id} className="flex-shrink-0 w-full h-[60vh] md:h-[80vh] bg-gray-50">
-            <img
-              src={image.src}
-              alt={image.alt}
-              // แก้ตรงนี้: เปลี่ยนจาก object-cover เป็น object-contain
-              className="w-full h-full object-contain" 
-            />
-          </div>
-        ))}
-      </div>
-
-      {/* Side Images Preview */}
-      <div className="absolute top-0 left-0 w-full h-full flex items-center justify-between pointer-events-none">
-        {images.map((image, index) => {
-          const prevIndex = (currentIndex - 1 + images.length) % images.length;
-          const nextIndex = (currentIndex + 1) % images.length;
-
-          let transform = 'scale(0)';
-          let opacity = 0;
-          let side = '';
-
-          if (index === prevIndex) {
-            transform = 'translateX(-80%) scale(0.8)';
-            opacity = 0.5;
-            side = 'left-0';
-          } else if (index === nextIndex) {
-            transform = 'translateX(80%) scale(0.8)';
-            opacity = 0.5;
-            side = 'right-0';
-          }
-
-          if (index !== currentIndex) {
+    <section className="w-full bg-white py-12 overflow-hidden">
+      <div className="relative w-full max-w-[1920px] mx-auto h-[50vh] md:h-[70vh]">
+        
+        <div 
+          className="absolute top-0 left-0 h-full flex items-center transition-transform duration-700 ease-out will-change-transform"
+          style={{
+            transform: `translateX(calc(-${currentIndex * 80}% + 10%))` 
+          }}
+        >
+          {images.map((image, index) => {
+            const isActive = index === currentIndex;
             return (
-              <div
-                key={`preview-${image.id}`}
-                className={`absolute w-full h-full top-0 ${side} transition-all duration-700 ease-in-out`}
-                style={{
-                  transform: transform,
-                  opacity: opacity,
-                }}
+              <div 
+                key={image.id}
+                className={`
+                  relative flex-shrink-0 w-[80%] h-full px-2 md:px-4
+                  transition-all duration-700 ease-out
+                  ${isActive ? 'scale-100 opacity-100 z-10' : 'scale-90 opacity-40 grayscale-[30%]'}
+                `}
               >
-                <div className="w-[80%] h-full mx-auto">
-                   <img
+                <div className="w-full h-full rounded-2xl overflow-hidden shadow-xl bg-gray-100 relative group cursor-pointer">
+                   {/* รูปภาพ */}
+                  <img
                     src={image.src}
                     alt={image.alt}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    onClick={() => setCurrentIndex(index)}
                   />
+                  
+                  {/* Overlay เงาดำจางๆ เพื่อให้อ่าน text ง่าย (เฉพาะรูป Active) */}
+                  <div className={`absolute inset-0 bg-black/10 transition-opacity duration-500 ${isActive ? 'opacity-0 hover:opacity-100' : 'opacity-0'}`}></div>
                 </div>
               </div>
             );
-          }
-          return null;
-        })}
-      </div>
+          })}
+        </div>
 
-
-      {/* Navigation Buttons */}
-      <div className="absolute top-0 left-0 w-full h-full flex items-center justify-between px-4">
+        {/* ปุ่มลูกศรซ้ายขวา (Floating) */}
         <button
           onClick={handlePrev}
-          className="bg-black/20 hover:bg-black/40 text-white rounded-full p-2 transition z-20"
-          aria-label="Previous Image"
+          className="absolute left-4 top-1/2 -translate-y-1/2 z-20 bg-white/80 hover:bg-white text-gray-800 p-3 rounded-full shadow-lg backdrop-blur-sm transition-all hover:scale-110 hidden md:block"
         >
-          <svg className="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-          </svg>
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
         </button>
+
         <button
           onClick={handleNext}
-          className="bg-black/20 hover:bg-black/40 text-white rounded-full p-2 transition z-20"
-          aria-label="Next Image"
+          className="absolute right-4 top-1/2 -translate-y-1/2 z-20 bg-white/80 hover:bg-white text-gray-800 p-3 rounded-full shadow-lg backdrop-blur-sm transition-all hover:scale-110 hidden md:block"
         >
-          <svg className="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5L15.75 12l-7.5 7.5" />
-          </svg>
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
         </button>
+
+        {/* จุด Indicators */}
+        <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-2 z-20">
+          {images.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => setCurrentIndex(index)}
+              className={`transition-all duration-300 rounded-full shadow-sm
+                ${index === currentIndex 
+                  ? 'w-8 h-2 bg-gray-800' 
+                  : 'w-2 h-2 bg-gray-400 hover:bg-gray-600'
+                }`}
+            />
+          ))}
+        </div>
+
       </div>
-    </div>
+    </section>
   );
 };
 
