@@ -8,9 +8,7 @@ const Navbar = () => {
           {/* Logo and Brand Name */}
           <div className="flex items-center">
             {/* You can replace this with your logo */}
-            <svg className="h-8 w-8 mr-2 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-            </svg>
+            <img src="https://source-th.com/wp-content/uploads/2017/10/logo-fav.png" alt="Logo" className="h-8 w-8 mr-2" />
             <Link href="/" className="text-xl font-bold text-gray-800">
               source-th
             </Link>

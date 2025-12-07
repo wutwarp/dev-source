@@ -7,10 +7,10 @@ const ImageSlider = () => {
   const images = [
     { id: 1, src: "https://www.source-th.com/wp-content/uploads/2025/02/slide5.jpg", alt: "Image 1" },
     { id: 2, src: "https://www.source-th.com/wp-content/uploads/2024/03/ROOM-PHOTO-min.jpg", alt: "Image 2" },
-    { id: 3, src: "https://www.source-th.com/wp-content/uploads/2025/02/slide5.jpg", alt: "Image 3" },
-    { id: 4, src: "https://www.source-th.com/wp-content/uploads/2025/02/slide5.jpg", alt: "Image 4" },
-    { id: 5, src: "https://www.source-th.com/wp-content/uploads/2025/02/slide5.jpg", alt: "Image 5" },
-    { id: 6, src: "https://www.source-th.com/wp-content/uploads/2025/02/slide5.jpg", alt: "Image 6" },
+    { id: 3, src: "https://www.source-th.com/wp-content/uploads/2025/02/slide4.jpg", alt: "Image 3" },
+    { id: 4, src: "https://source-th.com/wp-content/uploads/2024/09/PURO-Lax.jpg", alt: "Image 4" },
+    //{ id: 5, src: "https://www.source-th.com/wp-content/uploads/2025/02/slide5.jpg", alt: "Image 5" },
+    //{ id: 6, src: "https://www.source-th.com/wp-content/uploads/2025/02/slide5.jpg", alt: "Image 6" },
   ];
 
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -32,18 +32,20 @@ const ImageSlider = () => {
   return (
     <div className="relative w-full overflow-hidden">
       {/* Image Container */}
-      <div
+       <div
         className="flex transition-transform duration-700 ease-in-out"
         style={{
           transform: `translateX(-${currentIndex * 100}%)`,
         }}
       >
         {images.map((image) => (
-          <div key={image.id} className="flex-shrink-0 w-full h-[60vh] md:h-[80vh]">
+          // เพิ่ม bg-gray-100 หรือสีที่ชอบ เพื่อรองรับกรณีรูปไม่เต็มจอ
+          <div key={image.id} className="flex-shrink-0 w-full h-[60vh] md:h-[80vh] bg-gray-50">
             <img
               src={image.src}
               alt={image.alt}
-              className="w-full h-full object-cover"
+              // แก้ตรงนี้: เปลี่ยนจาก object-cover เป็น object-contain
+              className="w-full h-full object-contain" 
             />
           </div>
         ))}
