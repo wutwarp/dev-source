@@ -30,36 +30,31 @@ const ImageSlider = () => {
 
   return (
     <section className="w-full bg-white py-12 overflow-hidden">
-      <div className="relative w-full max-w-[1920px] mx-auto h-[50vh] md:h-[70vh]">
+      <div className="relative w-full max-w-[1920px] mx-auto h-[50vh] md:h-[70vh] px-4">
         
-        <div 
-          className="absolute top-0 left-0 h-full flex items-center transition-transform duration-700 ease-out will-change-transform"
-          style={{
-            transform: `translateX(calc(-${currentIndex * 80}% + 10%))` 
-          }}
-        >
+        {/* Image Stack with Fade Effect */}
+        <div className="relative w-full h-full">
           {images.map((image, index) => {
             const isActive = index === currentIndex;
             return (
               <div 
                 key={image.id}
                 className={`
-                  relative flex-shrink-0 w-[80%] h-full px-2 md:px-4
-                  transition-all duration-700 ease-out
-                  ${isActive ? 'scale-100 opacity-100 z-10' : 'scale-90 opacity-40 grayscale-[30%]'}
+                  absolute inset-0 w-full h-full
+                  transition-all duration-1000 ease-in-out
+                  ${isActive ? 'opacity-100 scale-100 z-10' : 'opacity-0 scale-105 z-0'}
                 `}
               >
-                <div className="w-full h-full rounded-2xl overflow-hidden shadow-xl bg-gray-100 relative group cursor-pointer">
-                   {/* รูปภาพ */}
+                <div className="w-full h-full rounded-2xl overflow-hidden shadow-2xl bg-gray-100 relative group cursor-pointer">
+                  {/* รูปภาพ */}
                   <img
                     src={image.src}
                     alt={image.alt}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    onClick={() => setCurrentIndex(index)}
+                    className="w-full h-full object-contain transition-transform duration-700 group-hover:scale-105"
                   />
                   
-                  {/* Overlay เงาดำจางๆ เพื่อให้อ่าน text ง่าย (เฉพาะรูป Active) */}
-                  <div className={`absolute inset-0 bg-black/10 transition-opacity duration-500 ${isActive ? 'opacity-0 hover:opacity-100' : 'opacity-0'}`}></div>
+                  {/* Overlay เงาดำจางๆ เมื่อ hover */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 </div>
               </div>
             );

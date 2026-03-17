@@ -7,7 +7,6 @@ const Navbar = () => {
         <div className="flex justify-between items-center">
           {/* Logo and Brand Name */}
           <div className="flex items-center">
-            {/* You can replace this with your logo */}
             <img src="https://source-th.com/wp-content/uploads/2017/10/logo-fav.png" alt="Logo" className="h-8 w-8 mr-2" />
             <Link href="/" className="text-xl font-bold text-gray-800">
               source-th
@@ -21,6 +20,9 @@ const Navbar = () => {
             </Link>
             <Link href="/products" className="text-gray-600 hover:text-blue-500 px-3 py-2">
               Product
+            </Link>
+            <Link href="/stock" className="text-gray-600 hover:text-blue-500 px-3 py-2">
+              Stock
             </Link>
             {/* Cart menu */}
             <Link
